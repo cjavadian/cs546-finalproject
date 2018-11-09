@@ -21,6 +21,7 @@ router.get("/", async (req, res) => {
 			var eventObj = {}
 			eventObj['url'] = e['url']
 			eventObj['eventName'] = e['name']
+			eventObj['venue'] = e['_embedded']['venues'][0]['name']
 			eventObj['dateTime'] = moment(new Date(e['dates']['start']['dateTime'])).format('MMMM Do YYYY, h:mm a')
 			if (payload.hasOwnProperty(JSON.stringify(e['_embedded']['venues'][0]['location']))) {
 				payload[JSON.stringify(e['_embedded']['venues'][0]['location'])].push(eventObj)
