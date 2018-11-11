@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const exphbs = require("express-handlebars");
 const mainRoutes = require("./main");
-// var mid = require('../middleware/authenticateUser');
 
 const constructorMethod = app => {
 	app.engine('hbs', exphbs({extname: 'hbs'}));

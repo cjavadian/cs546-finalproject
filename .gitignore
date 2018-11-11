@@ -77,3 +77,6 @@ typings/
 
 #DS Store
 .DS_Store
+
+#config file
+config/*
