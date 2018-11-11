@@ -92,10 +92,6 @@ function sortEvents(unsortedPayload){
 		});
 	});
 	return sortedPayload
-
-	// return eventArray.sort((a, b) => {
-	// 	return moment.parse(a['dateTime'], 'MMMM Do YYYY, h:mm a').diff(moment.parse(b['dateTime'], 'MMMM Do YYYY, h:mm a'))
-	// })
 }
 
 module.exports = router;
