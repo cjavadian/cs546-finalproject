@@ -16,7 +16,7 @@ $(document).ready(function() {
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {
 
-      	// display/hide submit buttons
+      	// hide submit button
       	document.getElementById('submitButton').style.display = 'none';
       	document.getElementById('loadButton').style.display = 'block';
 
@@ -30,6 +30,10 @@ $(document).ready(function() {
         	// if form is not valid, prevent submission
 	        event.preventDefault();
 	        event.stopPropagation();
+
+	        // display submit button
+	        document.getElementById('submitButton').style.display = 'block';
+      		document.getElementById('loadButton').style.display = 'none';
         } else{
         	// prevent submission
 	        event.preventDefault();
@@ -75,7 +79,7 @@ $(document).ready(function() {
 		                console.log(jqXHR)
 
 		                // Display errors sent from backend & Hide map
-		                if(jqXHR.responseJSON['Result']['Error']){
+		                if(jqXHR.responseJSON){
 		                	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
 		                } else {
 		                	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR['statusText'] + '</strong>';
@@ -84,7 +88,7 @@ $(document).ready(function() {
         				document.getElementById('alertsDiv').style.display = 'block';
         				document.getElementById('hideMap').style.display = 'none';
         				document.getElementById('warningsDiv').style.display = 'none';
-        				// display/hide submit buttons
+        				// display submit buttons
         				document.getElementById('submitButton').style.display = 'block';
       					document.getElementById('loadButton').style.display = 'none';
 		            },
@@ -92,7 +96,7 @@ $(document).ready(function() {
 		            	// hide any alerts/warnings that may already be on screen
 		            	document.getElementById('alertsDiv').style.display = 'none';
 		            	document.getElementById('warningsDiv').style.display = 'none';
-		                // display/hide submit buttons
+		                // display submit buttons
 		                document.getElementById('submitButton').style.display = 'block';
       					document.getElementById('loadButton').style.display = 'none';
 
@@ -104,6 +108,11 @@ $(document).ready(function() {
 
       					// send data to google maps javascript file
 		                getPoints(data['Result']['locations'], data['Result']['center']);
+
+		                // smooth scroll to map on submission
+	                    $('html, body').animate({
+					        scrollTop: $("#map").offset().top
+					    }, 1000);
 		            }
 		        });
 	        }

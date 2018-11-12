@@ -45,6 +45,7 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 		if(response['page']['totalElements'] > 0){
 			var resEvents = response['_embedded']['events']
 			// loop through all pages in the request
+			// cannot request past page 4 because that will hit the API limit of 1000 events
 			while(response["_links"]['next'] && response['page']['number'] < 4) {
 				requestURL = "https://app.ticketmaster.com" + response['_links']['next']['href']
 				queryParameters = {apikey: config.ticketMaster.API_KEY}
@@ -68,7 +69,10 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 					payload[JSON.stringify(e['_embedded']['venues'][0]['location'])] = [eventObj];
 				}
 			})
+			// sort payload
 			payload = sortEvents(payload)
+
+			// format payload
 			var result = {"locations": payload, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
 			//send data to front end via AJAX 
 			res.send({'Result': result})
@@ -84,6 +88,7 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 	}
 });
 
+// function to sort all of the events in the payload by date
 function sortEvents(unsortedPayload){
 	var sortedPayload = {}
 	Object.keys(unsortedPayload).forEach(location => {
