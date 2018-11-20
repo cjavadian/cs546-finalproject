@@ -50,7 +50,7 @@ $(document).ready(function() {
 	        	invalidEndTime.innerHTML = "End time must be after start time"
 	        }
 	        if(form.checkValidity() === true){
-	        	// hide submit button
+	        	// hide submit button, show loading button
 		      	document.getElementById('submitButton').style.display = 'none';
 		      	document.getElementById('loadButton').style.display = 'block';
 	        	// payload to be sent to backend
@@ -84,17 +84,11 @@ $(document).ready(function() {
         				document.getElementById('alertsDiv').style.display = 'block';
         				document.getElementById('hideMap').style.display = 'none';
         				document.getElementById('warningsDiv').style.display = 'none';
-        				// display submit buttons
-        				document.getElementById('submitButton').style.display = 'block';
-      					document.getElementById('loadButton').style.display = 'none';
 		            },
 		            success: function (data) {
 		            	// hide any alerts/warnings that may already be on screen
 		            	document.getElementById('alertsDiv').style.display = 'none';
 		            	document.getElementById('warningsDiv').style.display = 'none';
-		                // display submit buttons
-		                document.getElementById('submitButton').style.display = 'block';
-      					document.getElementById('loadButton').style.display = 'none';
 
       					// console.log(data)
       					if(data['Result']['warnings']['rateLimit']){
@@ -123,6 +117,11 @@ $(document).ready(function() {
 	                    $('html, body').animate({
 					        scrollTop: $("#map").offset().top
 					    }, 1000);
+		            },
+		            complete: function(jqXHR, textStatus){
+		            	// display submit buttons, hide loading button
+		                document.getElementById('submitButton').style.display = 'block';
+      					document.getElementById('loadButton').style.display = 'none';
 		            }
 		        });
 	        }
