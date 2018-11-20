@@ -16,9 +16,6 @@ $(document).ready(function() {
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {
 
-      	// hide submit button
-      	document.getElementById('submitButton').style.display = 'none';
-      	document.getElementById('loadButton').style.display = 'block';
 
       	// fix form validity reponse text
       	invalidEndTime.innerHTML = "Please provide an end time."
@@ -30,10 +27,6 @@ $(document).ready(function() {
         	// if form is not valid, prevent submission
 	        event.preventDefault();
 	        event.stopPropagation();
-
-	        // display submit button
-	        document.getElementById('submitButton').style.display = 'block';
-      		document.getElementById('loadButton').style.display = 'none';
         } else{
         	// prevent submission
 	        event.preventDefault();
@@ -48,21 +41,18 @@ $(document).ready(function() {
 	        // VALIDITION
 	        if(startTime.format() === 'Invalid date'){
 	        	startTimeInput.setCustomValidity("Invalid")
-	        	document.getElementById('submitButton').style.display = 'block';
-      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(endTime.format() === 'Invalid date'){
 	        	endTimeInput.setCustomValidity("Invalid")
-	        	document.getElementById('submitButton').style.display = 'block';
-      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(endTime < startTime){
 	        	endTimeInput.setCustomValidity("Invalid")
 	        	invalidEndTime.innerHTML = "End time must be after start time"
-	        	document.getElementById('submitButton').style.display = 'block';
-      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(form.checkValidity() === true){
+	        	// hide submit button
+		      	document.getElementById('submitButton').style.display = 'none';
+		      	document.getElementById('loadButton').style.display = 'block';
 	        	// payload to be sent to backend
 	        	var request_data = {
 	                "Payload": {
