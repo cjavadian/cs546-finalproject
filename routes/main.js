@@ -57,9 +57,9 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 			}
 
 			// console.log(resEvents['_embedded']['venues'][0]['location'])
-			resEvents.forEach(e => {
-				console.log(JSON.stringify(e['_embedded']['venues'][0]['location']))
-			})
+			// resEvents.forEach(e => {
+			// 	console.log(JSON.stringify(e['_embedded']['venues'][0]['location']))
+			// })
 			payload = resEvents
 
 			// QUERY DB TO GET ALL SAVED EVENTS,
