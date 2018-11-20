@@ -17,3 +17,7 @@
 #warningsDiv{
 	display: none;
 }
+#saveButton{
+	padding:0;
+	margin-top:-95px
+}

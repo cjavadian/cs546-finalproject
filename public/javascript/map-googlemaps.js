@@ -31,21 +31,13 @@ function getPoints(locations, center){
 
     //allows for an info window when a user clicks on a marker
 	var infowindow = new google.maps.InfoWindow({
-		maxWidth: 300
+		maxWidth: 300,
+		// minWidth: 200
 	})
 	// loop through each location returned by our backend
 	Object.keys(locations).forEach(k => {
 		//get the coordinates of each location
-		coords = JSON.parse(k)
-
-		// set an empty contentString to allow for dynamic appending
-		var contentString = '';
-
-		// loop through each event found at a location
-		locations[k].forEach(eventObj =>{
-			// append an ordered list of event names and times that has a url associated with each
-			contentString += '<li><p><a target="_blank" href=' + eventObj['url'] + '>' + eventObj['eventName'] + ' - ' + eventObj['dateTime'] + '</a></p></li>'
-		})
+		var coords = JSON.parse(k)
 
 		// change grammar based on number of events found
         var eventPluralizer = (locations[k].length == 1 ? "Event Found at " : "Events Found at ")
@@ -54,6 +46,7 @@ function getPoints(locations, center){
 		var marker = new google.maps.Marker({
 			// set the position of the marker
 	        position: new google.maps.LatLng(coords['latitude'], coords['longitude']),
+	        // position: {"lat": Number(coords['latitude']), "lng": Number(coords['longitude'])},
 	        // set a tooltip for the marker
 	        title: locations[k].length.toString() + ' ' + eventPluralizer + locations[k][0]['venue'],
 	        // map which will have markers be displayed on it
@@ -66,7 +59,8 @@ function getPoints(locations, center){
         // add an onClick listener to each marker that will display info regarding each location
     	marker.addListener('click', function() {
     		//content to be displayed within info window
-    		infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + contentString + '</ol>')
+    		// infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + contentString + '</ol>')
+    		infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + getContentString(k) + '</ol>')
     		// open infowindow on click
 			infowindow.open(map, marker);
 		});
@@ -77,6 +71,96 @@ function getPoints(locations, center){
 	})
 }
 
+function getContentString(position){
+	// set an empty contentString to allow for dynamic appending
+	var contentString = ''
+	var locations = JSON.parse(sessionStorage.parsedEvents)
+	// loop through each event found at a location
+	locations[position].forEach(eventObj =>{
+		// append an ordered list of event names and times that has a url associated with each
+		if(eventObj['saved']){
+			var icon = '<i style="color: red" class="fa fa-bookmark" aria-hidden="true"></i>'
+			var buttonIcon = '<button title="Unsave Event" class="btn" onclick="saveEvent(this, ' + JSON.parse(position)['latitude'] + ', ' + JSON.parse(position)['longitude'] + ')" data-eventId="' + eventObj['id'] + '" id="saveButton">'+ icon +'</button>'
+		}else{
+			var icon = '<i class="fa fa-bookmark-o" aria-hidden="true"></i>'
+			var buttonIcon = '<button title="Save Event" class="btn" onclick="saveEvent(this, ' + JSON.parse(position)['latitude'] + ', ' + JSON.parse(position)['longitude'] + ')" data-eventId="' + eventObj['id'] + '" id="saveButton">'+ icon +'</button>'
+		}
+		contentString += '<div class="row">' +
+								'<div class="col-10">' +
+									'<li>' +
+										'<p><a target="_blank" href=' + eventObj['url'] + '>' + eventObj['eventName'] + ' - ' + eventObj['dateTime'] + '</a></p>' +
+									'</li>' +
+								'</div>' +
+								'<div class="col offset-md-10">' +
+									buttonIcon +
+								'</div>' +
+						'</div>'
+	})
+	return contentString
+}
+
+function saveEvent(element, lat, lng){
+	// stringify this lat,lng object so that it can be used to search through our dict of locations
+	var coords = JSON.stringify({"longitude": lng.toString(), "latitude": lat.toString()})
+
+	// get the events stored in the session storage
+	var parsedEvents = JSON.parse(sessionStorage.parsedEvents)
+
+	// get the group of events within a location 
+	var locationGroup = parsedEvents[coords]
+
+	// looks through a group of events and returns the one with a matching ID to the event clicked
+	var eventToSave = locationGroup.find(e => {
+		return e['id'] == element.getAttribute('data-eventId')
+	})
+	
+	// determine which route to post to depending on if the event was saved or not
+	var postRequest = eventToSave['saved'] ? '/unsave' : '/save'
+
+	$.ajax({
+        url: 'http://localhost:3000' + postRequest,
+        type: 'POST',
+        timeout: 30 * 1000,
+        dataType: "json",
+        data: eventToSave,
+        error: function (jqXHR, textStatus, errorThrown) {
+     //        // alert(errorThrown);
+			console.log(jqXHR)
+
+     //        // Display errors sent from backend & Hide map
+     //        if(jqXHR.responseJSON){
+     //        	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
+     //        } else {
+     //        	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR['statusText'] + '</strong>';
+     //        }
+     //        // display/hide alerts
+		// 	document.getElementById('alertsDiv').style.display = 'block';
+		// 	document.getElementById('hideMap').style.display = 'none';
+		// 	document.getElementById('warningsDiv').style.display = 'none';
+		// 	// display submit buttons
+		// 	document.getElementById('submitButton').style.display = 'block';
+				// document.getElementById('loadButton').style.display = 'none';
+        },
+        success: function (data) {
+        	// change the property in the object that says if an event was saved or not
+			eventToSave['saved'] = !eventToSave['saved']
+			// change HTML in the info window depending on if the event is saved or not
+			if(eventToSave['saved']){
+				element.innerHTML = '<i style="color: red" class="fa fa-bookmark" aria-hidden="true"></i>'
+				element.title = 'Unsave Event'
+			} else{
+				element.innerHTML = '<i class="fa fa-bookmark-o" aria-hidden="true"></i>'
+				element.title = 'Save Event'
+			}
+			// save the updated object into the session data 
+			sessionStorage.setItem("parsedEvents", JSON.stringify(parsedEvents))
+
+        	// console.log(data)
+        }
+    });
+
+}
 
 $(document).ready(function() {
+
 });

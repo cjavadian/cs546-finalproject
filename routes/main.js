@@ -38,6 +38,7 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 							size: '200' };
 		var response = await request({url: requestURL, qs: queryParameters, timeout: 5000})
 		response = JSON.parse(response)
+
 		// if rate limit was exceeding, create a warning to show the user
 		if(response['page']['totalElements'] >= 1000) warnings['rateLimit'] = 'API Limits Exceeded: Only the first 1000 events are shown'
 
@@ -54,26 +55,21 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 				// append new events onto original array of events
 				Array.prototype.push.apply(resEvents, response['_embedded']['events'])
 			}
-			// loop through each event found in the ticket master response
-			resEvents.forEach(function(e){
-				// create an object with all the event details we want
-				var eventObj = {}
-				eventObj['url'] = e['url']
-				eventObj['eventName'] = e['name']
-				eventObj['venue'] = e['_embedded']['venues'][0]['name']
-				eventObj['dateTime'] = moment(e['dates']['start']['dateTime'], moment.ISO_8601).format('MMMM Do YYYY, h:mm a')
-				if(eventObj['dateTime'] === 'Invalid date') eventObj['dateTime'] = 'Check website for times'
-				if (payload.hasOwnProperty(JSON.stringify(e['_embedded']['venues'][0]['location']))) {
-					payload[JSON.stringify(e['_embedded']['venues'][0]['location'])].push(eventObj)
-				} else{
-					payload[JSON.stringify(e['_embedded']['venues'][0]['location'])] = [eventObj];
-				}
+
+			// console.log(resEvents['_embedded']['venues'][0]['location'])
+			resEvents.forEach(e => {
+				console.log(JSON.stringify(e['_embedded']['venues'][0]['location']))
 			})
-			// sort payload
-			payload = sortEvents(payload)
+			payload = resEvents
+
+			// QUERY DB TO GET ALL SAVED EVENTS,
+			// LOOP THRU ALL EVENTS, STICK ID WITH EVENTNAME INTO THIS DICT
+			dict_saved_events = {"1ae0Z44b7pfZd866": "eventName",
+								 "k7v17488tG7i8Wj": "eventName",
+								 "k7v1AAfsvwZAG1Cu5": "eventName"}
 
 			// format payload
-			var result = {"locations": payload, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
+			var result = {"locations": payload, "saved": dict_saved_events, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
 			//send data to front end via AJAX 
 			res.send({'Result': result})
 			// console.log(payload)
@@ -87,16 +83,5 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 		res.status(500).send({'Result': payload})
 	}
 });
-
-// function to sort all of the events in the payload by date
-function sortEvents(unsortedPayload){
-	var sortedPayload = {}
-	Object.keys(unsortedPayload).forEach(location => {
-	sortedPayload[location] = unsortedPayload[location].sort((a, b) => {
-			return moment(a['dateTime'], 'MMMM Do YYYY, h:mm a').diff(moment(b['dateTime'], 'MMMM Do YYYY, h:mm a'))
-		});
-	});
-	return sortedPayload
-}
 
 module.exports = router;

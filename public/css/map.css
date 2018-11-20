@@ -3,7 +3,7 @@
 #map {
 	height: 100%;
 	padding: 23%;
-	/*width:100%;*/
+	/*width:auto;*/
 }
 #hideMap {
 	display: none;
@@ -13,4 +13,12 @@
 	font-weight: 500;
 	font-size: 14px;
 	padding-bottom: 10px;
+}
+.container-fluid{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.gm-style-iw {
+  min-width: 500px; 
+  min-height: 150px;
 }

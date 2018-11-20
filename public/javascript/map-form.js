@@ -106,8 +106,22 @@ $(document).ready(function() {
       						document.getElementById('warningsDiv').style.display = 'block';
       					}
 
+      					// format data
+      					formattedData = parseData(data['Result']['locations'], data['Result']['saved'])
+
+      					//sort data
+      					sortedPayload = sortEvents(formattedData)
+
+      					if (typeof(Storage) !== "undefined") {
+						    // sessionStorage.setItem("eventList", JSON.stringify(data['Result']['locations']));
+						    sessionStorage.setItem("parsedEvents", JSON.stringify(sortedPayload))
+						} else {
+						    // Sorry! No Web Storage support..
+						}
+						// console.log(sortedPayload)
+      					
       					// send data to google maps javascript file
-		                getPoints(data['Result']['locations'], data['Result']['center']);
+		                getPoints(sortedPayload, data['Result']['center']);
 
 		                // smooth scroll to map on submission
 	                    $('html, body').animate({
@@ -123,3 +137,36 @@ $(document).ready(function() {
       }, false);
     });
 });
+
+function parseData(resEvents, savedEvents){
+	payload = {}
+	// loop through each event found in the ticket master response
+	resEvents.forEach(function(e){
+		// create an object with all the event details we want
+		var eventObj = {}
+		eventObj['id'] = e['id']
+		eventObj['url'] = e['url']
+		savedEvents[e['id']] ? eventObj['saved'] = true : eventObj['saved'] = false;
+		eventObj['eventName'] = e['name']
+		eventObj['venue'] = e['_embedded']['venues'][0]['name']
+		eventObj['dateTime'] = moment(e['dates']['start']['dateTime'], moment.ISO_8601).format('MMMM Do YYYY, h:mm a')
+		if(eventObj['dateTime'] === 'Invalid date') eventObj['dateTime'] = 'Check website for times'
+		if (payload.hasOwnProperty(JSON.stringify(e['_embedded']['venues'][0]['location']))) {
+			payload[JSON.stringify(e['_embedded']['venues'][0]['location'])].push(eventObj)
+		} else{
+			payload[JSON.stringify(e['_embedded']['venues'][0]['location'])] = [eventObj];
+		}
+	})
+	return payload
+}
+
+// function to sort all of the events in the payload by date
+function sortEvents(unsortedPayload){
+	var sortedPayload = {}
+	Object.keys(unsortedPayload).forEach(location => {
+	sortedPayload[location] = unsortedPayload[location].sort((a, b) => {
+			return moment(a['dateTime'], 'MMMM Do YYYY, h:mm a').diff(moment(b['dateTime'], 'MMMM Do YYYY, h:mm a'))
+		});
+	});
+	return sortedPayload
+}
