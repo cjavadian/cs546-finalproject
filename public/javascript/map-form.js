@@ -48,13 +48,19 @@ $(document).ready(function() {
 	        // VALIDITION
 	        if(startTime.format() === 'Invalid date'){
 	        	startTimeInput.setCustomValidity("Invalid")
+	        	document.getElementById('submitButton').style.display = 'block';
+      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(endTime.format() === 'Invalid date'){
 	        	endTimeInput.setCustomValidity("Invalid")
+	        	document.getElementById('submitButton').style.display = 'block';
+      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(endTime < startTime){
 	        	endTimeInput.setCustomValidity("Invalid")
 	        	invalidEndTime.innerHTML = "End time must be after start time"
+	        	document.getElementById('submitButton').style.display = 'block';
+      			document.getElementById('loadButton').style.display = 'none';
 	        }
 	        if(form.checkValidity() === true){
 	        	// payload to be sent to backend
