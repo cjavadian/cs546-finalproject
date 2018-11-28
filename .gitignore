@@ -79,4 +79,4 @@ typings/
 .DS_Store
 
 #config file
-config/*
+config/dev.js

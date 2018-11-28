@@ -1,0 +1,31 @@
+.row {
+    display: block;
+}
+#alertsDiv{
+    display: none;
+}
+#warningsDiv{
+    display: none;
+}
+.title {
+    font-weight: 500;
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+.container-fluid{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#formContainer {
+    width: 35%;
+    margin: 0 auto;
+}
+
+.form-row {
+    padding-top: 10px;
+}
+
+h1 {
+    padding-top: 20px;
+}
