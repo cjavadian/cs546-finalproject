@@ -115,7 +115,7 @@ function saveEvent(element, lat, lng){
 	})
 	
 	// determine which route to post to depending on if the event was saved or not
-	var postRequest = eventToSave['saved'] ? '/unsave' : '/save'
+	var postRequest = eventToSave['saved'] ? '/profile/unsave' : '/profile/save'
 
 	$.ajax({
         url: 'http://localhost:3000' + postRequest,

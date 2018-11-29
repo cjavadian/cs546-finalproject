@@ -7,8 +7,10 @@ var geohash = require('ngeohash');
 var mid = require('../middleware/validateMapForm');
 var config = require('../config/dev');
 
+// pass authentication status to frontend
 router.get("/", async (req, res) => {
-	res.render('map')
+    console.log(req.isAuthenticated);
+	res.render('map', {notAuthenticated: req.isAuthenticated === false})
 });
 
 router.post("/", mid.validateMapForm, async (req, res) =>{
@@ -21,6 +23,7 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 								address: req.body['Payload']['postalCode'] };
 		var googlePlacesResponse = await request({url: requestURL, qs: queryParameters})
 		googlePlacesResponse = JSON.parse(googlePlacesResponse)
+        console.log(googlePlacesResponse);
 		var centerLat = googlePlacesResponse['results'][0]['geometry']['location']['lat']
 		var centerLng = googlePlacesResponse['results'][0]['geometry']['location']['lng']
 
