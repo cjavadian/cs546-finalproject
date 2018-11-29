@@ -13,7 +13,7 @@ function initMap() {
 var markerArr = []
 
 // function to display data points on map
-function getPoints(locations, center){ 
+function getPoints(locations, center, auth){ 
     if(!locations || !center) return;
     // Show map after user presses Find Events, then initialize the map
     document.getElementById('hideMap').style.display = 'block';
@@ -60,7 +60,7 @@ function getPoints(locations, center){
     	marker.addListener('click', function() {
     		//content to be displayed within info window
     		// infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + contentString + '</ol>')
-    		infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + getContentString(k) + '</ol>')
+    		infowindow.setContent("<div class='title'>" + eventPluralizer + locations[k][0]['venue'] + ":</div>" + '<ol>' + getContentString(k, auth) + '</ol>')
     		// open infowindow on click
 			infowindow.open(map, marker);
 		});
@@ -71,7 +71,7 @@ function getPoints(locations, center){
 	})
 }
 
-function getContentString(position){
+function getContentString(position, auth){
 	// set an empty contentString to allow for dynamic appending
 	var contentString = ''
 	var locations = JSON.parse(sessionStorage.parsedEvents)
@@ -85,6 +85,8 @@ function getContentString(position){
 			var icon = '<i class="fa fa-bookmark-o" aria-hidden="true"></i>'
 			var buttonIcon = '<button title="Save Event" class="btn" onclick="saveEvent(this, ' + JSON.parse(position)['latitude'] + ', ' + JSON.parse(position)['longitude'] + ')" data-eventId="' + eventObj['id'] + '" id="saveButton">'+ icon +'</button>'
 		}
+		var displayButton;
+		auth ? displayButton = buttonIcon : displayButton = ''
 		contentString += '<div class="row">' +
 								'<div class="col-10">' +
 									'<li>' +
@@ -92,7 +94,7 @@ function getContentString(position){
 									'</li>' +
 								'</div>' +
 								'<div class="col offset-md-10">' +
-									buttonIcon +
+									displayButton +
 								'</div>' +
 						'</div>'
 	})

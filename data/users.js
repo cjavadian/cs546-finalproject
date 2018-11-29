@@ -3,6 +3,8 @@ const users = mongoCollections.users;
 const uuidv4 = require("uuid/v4");
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
+// if you get this error for bcrypt -> dyld: lazy symbol binding failed:
+// DO THIS: npm rebuild bcrypt --build-from-source
 
 module.exports = {
     getUserById: async function(id) {
@@ -90,7 +92,6 @@ module.exports = {
             //no op
         }
 
-        console.log(usernameUser);
         if (usernameUser !== undefined) {
             throw "Username already exists"
         }

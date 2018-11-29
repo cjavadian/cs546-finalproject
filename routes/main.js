@@ -70,7 +70,7 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 								 "k7v1AAfsvwZAG1Cu5": "eventName"}
 
 			// format payload
-			var result = {"locations": payload, "saved": dict_saved_events, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
+			var result = {"auth": req.isAuthenticated, "locations": payload, "saved": dict_saved_events, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
 			//send data to front end via AJAX 
 			res.send({'Result': result})
 			// console.log(payload)

@@ -111,7 +111,7 @@ $(document).ready(function() {
 						// console.log(sortedPayload)
       					
       					// send data to google maps javascript file
-		                getPoints(sortedPayload, data['Result']['center']);
+		                getPoints(sortedPayload, data['Result']['center'], data['Result']['auth']);
 
 		                // smooth scroll to map on submission
 	                    $('html, body').animate({
