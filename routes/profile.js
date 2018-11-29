@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
     res.render("profile");
 })
 
-router.post("/profile/save", async (req, res) =>{
+router.post("/save", async (req, res) =>{
     try{
         console.log(req.body)
         // req.body['saved'] = !req.body['saved']
@@ -17,7 +17,7 @@ router.post("/profile/save", async (req, res) =>{
     }
 });
 
-router.post("/profile/unsave", async (req, res) =>{
+router.post("/unsave", async (req, res) =>{
     try{
         console.log(req.body)
         // req.body['saved'] = !req.body['saved']
