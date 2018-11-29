@@ -8,11 +8,31 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/site.css">
     <!-- ADD THIS CSS TO ALL PAGES -->
     <link rel="stylesheet" href="/public/css/login.css">
 </head>
 <body>
     <div class="container-fluid">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <a class="navbar-brand" href="/">Event finder</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/auth/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/auth/signup">Sign Up</a>
+                    </li>
+                  </ul>
+              </div>
+            </nav>
+        </div>
         <div class="row" id="formContainer">
             <h1>Login</h1>
             {{#if error}}
@@ -41,7 +61,12 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-12 mb-12">
-                        <button class="btn btn-primary mb-3" id="submitButton" type="submit">Signup</button>
+                        <button class="btn btn-primary mb-3" id="submitButton" type="submit">Login</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-12">
+                        <p>Don't have an account? Click <a href="/auth/signup">here</a> to sign up.</p>
                     </div>
                 </div>
             </form>
