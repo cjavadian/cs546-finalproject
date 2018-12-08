@@ -115,6 +115,7 @@ function saveEvent(element, lat, lng){
 	var eventToSave = locationGroup.find(e => {
 		return e['id'] == element.getAttribute('data-eventId')
 	})
+
 	
 	// determine which route to post to depending on if the event was saved or not
 	var postRequest = eventToSave['saved'] ? '/profile/unsave' : '/profile/save'

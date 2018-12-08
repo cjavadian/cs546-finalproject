@@ -177,5 +177,62 @@ module.exports = {
         if (deletionInfo.deletedCount === 0) throw `Error: could not remove user with id ${id}`;
 
         return true;
+    },
+    saveEvent: async function(id, eventID) {
+        // error check
+        if (!id) throw "Error: must provide an id";
+        if (typeof id !== "object") throw "Error: id must be an ObjectID";
+        if (!eventID) throw "Error: must provide an event id";
+        if (typeof eventID !== "string") throw "Error: event id must be a string";
+
+        // grab the user
+        const foundUser = await this.getUserById(id);
+
+        // only add the event if it's not already added to their array
+        let index = foundUser.savedEvents.indexOf(eventID);
+        if (index !== -1) {
+            return false;
+        } else {
+            // mark what we are updating and add the event to the user's saved array
+            foundUser.savedEvents.push(eventID)
+            let userUpdateInfo = {
+                savedEvents: foundUser.savedEvents
+            };
+
+            // get collection, update, and return
+            const userCollection = await users();
+            await userCollection.updateOne({
+                _id: id
+            }, {
+                $set: userUpdateInfo
+            });
+
+            return true;
+        }
+    },
+    unsaveEvent: async function(id, eventID) {
+        // error check
+        if (!id) throw "Error: must provide an id";
+        if (typeof id !== "object") throw "Error: id must be an ObjectID";
+        if (!eventID) throw "Error: must provide an event id";
+        if (typeof eventID !== "string") throw "Error: event id must be a string";
+
+        // get user
+        const foundUser = await this.getUserById(id);
+
+        // mark what we are updating (remove the eventID from the array)
+        let userUpdateInfo = {
+            savedEvents: foundUser.savedEvents.filter(id => id !== eventID)
+        };
+
+        // get collection, update, and return
+        const userCollection = await users();
+        await userCollection.updateOne({
+            _id: id
+        }, {
+            $set: userUpdateInfo
+        });
+
+        return true;
     }
 }
