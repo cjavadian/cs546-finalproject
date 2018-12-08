@@ -64,10 +64,16 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 			payload = resEvents
 
 			// QUERY DB TO GET ALL SAVED EVENTS,
-			// LOOP THRU ALL EVENTS, STICK ID WITH EVENTNAME INTO THIS DICT
-			dict_saved_events = {"1ae0Z44b7pfZd866": "eventName",
-								 "k7v17488tG7i8Wj": "eventName",
-								 "k7v1AAfsvwZAG1Cu5": "eventName"}
+			// LOOP THRU ALL EVENTS, STICK ID WITH SAVED INTO THIS DICT
+            if (req.isAuthenticated) {
+                dict_saved_events = {}
+                req.authedUser.savedEvents.forEach(id => {
+                    dict_saved_events[id] = 'saved';
+                })
+                console.log(dict_saved_events);
+            } else {
+                dict_saved_events = {};
+            }
 
 			// format payload
 			var result = {"auth": req.isAuthenticated, "locations": payload, "saved": dict_saved_events, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}

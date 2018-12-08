@@ -2,3 +2,12 @@
 <a href="/auth/logout">Logout</a>
 <a href="/auth/delete">Delete Account</a>
 <a href="/">Map</a>
+<br/>
+<p>Saved Events</p>
+{{#each savedEvents}}
+    {{#each this}}
+        <p>{{@key}}: {{this}}</p>
+    {{/each}}
+    </br>
+{{/each}}
+{{error}}
