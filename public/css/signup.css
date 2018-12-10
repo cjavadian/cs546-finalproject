@@ -82,3 +82,9 @@ html {
     background-color: black;
     border-color: #EE834E;
 }
+
+button#submitButton:active {
+    background-color: black;
+    border-color: #EE834E;
+    color: white;
+}
