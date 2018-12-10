@@ -3,12 +3,26 @@ const router = express.Router();
 const Events = require("../data").events
 const Users = require("../data").users
 
+// get shared events info - need to do this one by one since order is not preserver
+// in find in mongo
+async function getSharedEventInfo(sharedEvents) {
+    let ret = [];
+
+    for(var i = 0; i < sharedEvents.length; i++) {
+        let event = await Events.getEventById(sharedEvents[i].eventID);
+        event.username = sharedEvents[i].username;
+        ret.push(event);
+    };
+
+    return ret; 
+}
 
 router.get("/", async (req, res) => {
     try {
         const savedEvents = await Events.getEventsByIDs(req.authedUser.savedEvents);
-        console.log(savedEvents);
-        res.render("profile", {savedEvents: savedEvents});
+        const sharedEvents = await getSharedEventInfo(req.authedUser.sharedEvents);
+        
+        res.render("profile", {savedEvents: savedEvents, sharedEvents: sharedEvents});
     } catch (e) {
         console.log(e);
         res.render("profile", {error: "Could not retrieve saved/shared events"})
@@ -40,16 +54,40 @@ router.post("/save", async (req, res) =>{
 
 router.post("/unsave", async (req, res) =>{
     try{
-        console.log(req.body)
-        // Should we switch this to use Events.findEventByID?
         // Remove the event from the user's saved list. We aren't removing
         // the event from the DB because other users can still have that event saved
-        await Users.unsaveEvent(req.authedUser._id, req.body.id);
+        await Users.unsaveEvent(req.authedUser._id, req.body.eventID);
         res.json('done')
     }catch(e){
         console.log(e)
         res.sendStatus(500);
     }
 });
+
+router.post("/share", async (req, res) => {
+    try {
+        // share the event
+        await Users.shareEvent(req.authedUser.username, req.body.toUser, req.body.eventID);
+        res.json("done");
+    } catch (e) {
+        console.log(e);
+        // send userful error text
+        if (e === "Error: No user found") {
+            return res.status(404).json("No user found");
+        }
+        return res.status(500).json("An unexpected error occurred");
+    }
+});
+
+router.post("/unshare", async (req, res) => {
+    try {
+        console.log(req.body);
+        await Users.removeSharedEvent(req.authedUser._id, req.body.eventID, req.body.username);
+        res.json("done");
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json("An unexpected error occurred");
+    }
+})
 
 module.exports = router;

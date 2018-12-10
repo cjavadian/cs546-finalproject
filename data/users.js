@@ -3,6 +3,7 @@ const users = mongoCollections.users;
 const uuidv4 = require("uuid/v4");
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
+const Events = require("./events");
 // if you get this error for bcrypt -> dyld: lazy symbol binding failed:
 // DO THIS: npm rebuild bcrypt --build-from-source
 
@@ -20,7 +21,7 @@ module.exports = {
 
         // make sure you actually found something
         if (!foundUser) throw "Error: user not found";
-        return foundUser; 
+        return foundUser;
     },
     getUserByUsername: async function(username) {
         // error check
@@ -35,7 +36,7 @@ module.exports = {
 
         // make sure you actually found something
         if (!foundUser) throw "Error: user not found";
-        return foundUser; 
+        return foundUser;
     },
     getUserByEmail: async function(email) {
         // error check
@@ -50,7 +51,7 @@ module.exports = {
 
         // make sure you actually found something
         if (!foundUser) throw "Error: user not found";
-        return foundUser; 
+        return foundUser;
     },
     getUserBySessionID: async function(sessionID) {
         // error check
@@ -65,7 +66,7 @@ module.exports = {
 
         // make sure you actually found something
         if (!foundUser) throw "Error: user not found";
-        return foundUser; 
+        return foundUser;
     },
     addUser: async function(username, password, email) {
         // error check
@@ -224,6 +225,108 @@ module.exports = {
         let userUpdateInfo = {
             savedEvents: foundUser.savedEvents.filter(id => id !== eventID)
         };
+
+        // get collection, update, and return
+        const userCollection = await users();
+        await userCollection.updateOne({
+            _id: id
+        }, {
+            $set: userUpdateInfo
+        });
+
+        return true;
+    },
+    // fromUser is the username of the person who is sharing
+    // toUser is either username or email of who they want to share with
+    // eventID is the id of event to share
+    shareEvent: async function(fromUser, toUser, eventID) {
+        //error check
+        if (!fromUser) throw "Error: must provide fromUser";
+        if (!toUser) throw "Error: must provide toUser";
+        if (!eventID) throw "Error: must provide eventID";
+        if (typeof(fromUser) !== "string") throw "Error: fromUser must be a string";
+        if (typeof(toUser) !== "string") throw "Error: toUser must be a string";
+        if (typeof(eventID) !== "string") throw "Error: eventID must be a string";
+
+        // make sure fromUser is valid
+        await this.getUserByUsername(fromUser);
+
+        // toUser can be either email or username so make sure one of those exists
+        let foundUser = undefined;
+        try {
+            foundUser = await this.getUserByUsername(toUser);
+        } catch(e) {
+            // no op
+        }
+        // not found by username, so try by email
+        if (!foundUser) {
+            try {
+                foundUser = await this.getUserByEmail(toUser);
+            } catch(e) {
+                // no op
+            }
+        }
+        // not found by both, so throw
+        if (!foundUser) {
+            throw "Error: No user found";
+        } else {
+            // make sure event is valid
+            await Events.getEventById(eventID);
+
+            // make sure this event + user combo has not been saved yet
+            let exists = foundUser.savedEvents.find(e => {
+                e.eventID === eventID && e.username === fromUser
+            })
+
+            // if it's already shared, that's fine
+            if (exists) {
+                return true;
+            } else {
+                // add to their array
+                foundUser.sharedEvents.push({
+                    "eventID": eventID,
+                    "username": fromUser
+                });
+
+                let userUpdateInfo = {
+                    sharedEvents: foundUser.sharedEvents
+                };
+
+                // get collection, update, and return
+                const userCollection = await users();
+                await userCollection.updateOne({
+                    _id: foundUser._id
+                }, {
+                    $set: userUpdateInfo
+                });
+
+                return true;
+            }
+        }
+    },
+    // id is the id of the user who wants to remove the shared event from their list
+    // eventID is the id of the event
+    // fromUser is the username of the person who shared with them
+    removeSharedEvent: async function(id, eventID, fromUser) {
+        // error check
+        if (!id) throw "Error: must provide an id";
+        if (!fromUser) throw "Error: must provide fromUser";
+        if (!eventID) throw "Error: must provide eventID";
+        if (typeof(fromUser) !== "string") throw "Error: fromUser must be a string";
+        if (typeof(eventID) !== "string") throw "Error: eventID must be a string";
+        if (typeof id !== "object") throw "Error: id must be an ObjectID";
+
+        // get user
+        const foundUser = await this.getUserById(id);
+
+        // mark what we are updating
+        let userUpdateInfo = {
+            // remove the event we want
+            sharedEvents: foundUser.sharedEvents.filter(e => {
+                return e.eventID !== eventID || e.username !== fromUser
+            })
+        };
+
 
         // get collection, update, and return
         const userCollection = await users();
