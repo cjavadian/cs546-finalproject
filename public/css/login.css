@@ -12,11 +12,11 @@
 .container-fluid{
     padding-left: 20px;
     padding-right: 20px;
+    background-color: black;
 }
 
-#formContainer {
-    width: 35%;
-    margin: 0 auto;
+.navbar-light .navbar-brand {
+    color: #EE834E;
 }
 
 .form-row {
@@ -25,4 +25,60 @@
 
 h1 {
     padding-top: 20px;
+}
+
+#formContainer {
+    width: 45%;
+    margin: 0 auto;
+    background-color: black;
+    border: 10px solid #EE834E;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.btn-primary {
+    color: black;
+    background-color: #EE834E;
+    border-color: #EE834E;
+    width: 100%;
+}
+
+body {
+    color: #EE834E;
+}
+
+html {
+    background-color: black;
+}
+
+.bg-light {
+    background-color: black !important;
+}
+
+.navbar {
+	color: #EE834E;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #EE834E;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: #EE834E;
+}
+
+.navbar-light .navbar-brand:hover {
+    color: #EE834E;
+    font-weight: bolder;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #EE834E;
+    font-weight: bolder;
+}
+
+.btn-primary:hover {
+    color: #EE834E;
+    background-color: black;
+    border-color: #EE834E;
 }
