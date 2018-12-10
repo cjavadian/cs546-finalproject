@@ -269,13 +269,16 @@ module.exports = {
         // not found by both, so throw
         if (!foundUser) {
             throw "Error: No user found";
+        } else if (foundUser.username === fromUser) {
+            // dont share with yourself
+            throw "Error: Can't share with yourself";
         } else {
             // make sure event is valid
             await Events.getEventById(eventID);
 
             // make sure this event + user combo has not been saved yet
-            let exists = foundUser.savedEvents.find(e => {
-                e.eventID === eventID && e.username === fromUser
+            let exists = foundUser.sharedEvents.find(e => {
+                return e.eventID === eventID && e.username === fromUser;
             })
 
             // if it's already shared, that's fine

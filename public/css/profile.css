@@ -1,3 +1,5 @@
-#alertsDiv {
-    display: none;
+.icon-btn-remove {
+    background: transparent;
+    color: red;
+    float: left;
 }

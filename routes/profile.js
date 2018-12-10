@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
     try {
         const savedEvents = await Events.getEventsByIDs(req.authedUser.savedEvents);
         const sharedEvents = await getSharedEventInfo(req.authedUser.sharedEvents);
-        
+
         res.render("profile", {savedEvents: savedEvents, sharedEvents: sharedEvents});
     } catch (e) {
         console.log(e);
@@ -31,7 +31,6 @@ router.get("/", async (req, res) => {
 
 router.post("/save", async (req, res) =>{
     try{
-        console.log(req.body)
         // make a new object unless i find a better way to rename
         // and remove fields
         let eventToSave = {
@@ -48,7 +47,7 @@ router.post("/save", async (req, res) =>{
         res.json('done')
     }catch(e){
         console.log(e)
-        res.sendStatus(500);
+        res.status(500).json("An unexpected error occurred");
     }
 });
 
@@ -59,8 +58,8 @@ router.post("/unsave", async (req, res) =>{
         await Users.unsaveEvent(req.authedUser._id, req.body.eventID);
         res.json('done')
     }catch(e){
-        console.log(e)
-        res.sendStatus(500);
+        console.log(e);
+        res.status(500).json("An unexpected error occurred");
     }
 });
 
@@ -74,6 +73,8 @@ router.post("/share", async (req, res) => {
         // send userful error text
         if (e === "Error: No user found") {
             return res.status(404).json("No user found");
+        } else if (e === "Error: Can't share with yourself") {
+            return res.status(403).json("You can't share with yourself");
         }
         return res.status(500).json("An unexpected error occurred");
     }
@@ -81,7 +82,6 @@ router.post("/share", async (req, res) => {
 
 router.post("/unshare", async (req, res) => {
     try {
-        console.log(req.body);
         await Users.removeSharedEvent(req.authedUser._id, req.body.eventID, req.body.username);
         res.json("done");
     } catch (e) {
