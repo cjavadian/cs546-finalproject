@@ -71,7 +71,7 @@
                                     <button type="submit">Share</button>
                                 </form>
                                 <div role="alert" id="alertsDiv-{{this._id}}" style="display: none;">
-                                    <p id="feedback-{{this._id}}"></p>
+                                    <p class="feedback" id="feedback-{{this._id}}"></p>
                                     {{!-- only hide the alert div, dont remove it from DOM --}}
                                     <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}').hide()">
                                         <span aria-hidden="true">&times;</span>
@@ -95,7 +95,7 @@
                                 <p>{{this.venue}} on {{this.dateTime}}</p>
                                 <p>Shared by: {{this.username}}</p>
                                 <div role="alert" id="alertsDiv-{{this._id}}-{{this.username}}" style="display: none;">
-                                    <p id="feedback-{{this._id}}-{{this.username}}"></p>
+                                    <p class="feedback" id="feedback-{{this._id}}-{{this.username}}"></p>
                                     {{!-- only hide the alert div, dont remove it from DOM --}}
                                     <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}-{{this.username}}').hide()">
                                         <span aria-hidden="true">&times;</span>

@@ -135,3 +135,7 @@ a:hover {
     text-decoration: underline;
     color: white;
 }
+
+.feedback {
+    color: black;
+}
