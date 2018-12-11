@@ -76,7 +76,7 @@ function removeSavedEvent(element) {
     var eventID = element.getAttribute("data-eventID");
 
     var requestData = {
-        "eventID": eventID,
+        "id": eventID,
     };
 
     var alertsDiv = document.getElementById("alertsDiv-" + eventID);
