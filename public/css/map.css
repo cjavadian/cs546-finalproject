@@ -109,3 +109,21 @@ button#loadButton {
 .banner p:hover {
     font-weight: bold;
 }
+
+a {
+    color: black;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+a:hover{
+    color: black;
+    text-decoration: underline;
+}
+
+#saveButton {
+    padding: 0;
+    margin-top: -95px;
+    background-color: transparent;
+}
