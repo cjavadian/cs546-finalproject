@@ -32,10 +32,6 @@ async function validateMapForm(req, res, next) {
 		res.status(400).json({"Error": "missing postalCode"})
 		return;
 	}
-	if(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(req.body['Payload']['postalCode']) !== true){
-		res.status(400).json({"Error": "malformed postalCode, must use US postalCode"})
-		return;
-	}
 	if(!req.body['Payload']['radius']){
 		res.status(400).json({"Error": "missing radius"})
 		return;

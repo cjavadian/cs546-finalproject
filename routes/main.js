@@ -23,6 +23,13 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 								address: req.body['Payload']['postalCode'] };
 		var googlePlacesResponse = await request({url: requestURL, qs: queryParameters})
 		googlePlacesResponse = JSON.parse(googlePlacesResponse)
+
+        // make sure the zip code is valid
+        if (googlePlacesResponse.status === 'ZERO_RESULTS') {
+            payload['Error'] = 'Invalid Zip Code';
+            return res.status(404).send({'Result': payload});
+        }
+
 		var centerLat = googlePlacesResponse['results'][0]['geometry']['location']['lat']
 		var centerLng = googlePlacesResponse['results'][0]['geometry']['location']['lng']
 
@@ -71,7 +78,6 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
                 req.authedUser.savedEvents.forEach(id => {
                     dict_saved_events[id] = 'saved';
                 })
-                console.log(dict_saved_events);
             } else {
                 dict_saved_events = {};
             }
