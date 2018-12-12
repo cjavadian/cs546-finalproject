@@ -42,16 +42,20 @@ module.exports = {
         if (!event.eventName) throw "Error: must provide an event name";
         if (!event.venue) throw "Error: must provide a venue";
         if (!event.dateTime) throw "Error: must provide a dateTime";
-        //if (!event.eventType) throw "Error: must provide a event type";
-        //if (!event.location) throw "Error: must provide a location";
+        if (!event.type) throw "Error: must provide a event type";
+        if (!event.location) throw "Error: must provide a location";
         
         if (typeof event._id !== "string") throw "Error: id must be a string";
         if (typeof event.url !== "string") throw "Error: url must be a string";
         if (typeof event.eventName !== "string") throw "Error: event name must be a string";
         if (typeof event.venue !== "string") throw "Error: venue must be a string";
         if (typeof event.dateTime !== "string") throw "Error: dateTime must be a string";
-        // if (typeof event.eventType !== "string") throw "Error: event type must be a string";
-        // if (typeof event.location !== "object") throw "Error: location must be a object";
+        if (typeof event.type !== "string") throw "Error: event type must be a string";
+        if (typeof event.location !== "object") throw "Error: location must be a object";
+        if (typeof event.location.city !== "string") throw "Error: city must be a string";
+        if (typeof event.location.latitude !== "string") throw "Error: latitude must be a string";
+        if (typeof event.location.longitude !== "string") throw "Error: longitude must be a string";
+        if (typeof event.location.postalCode !== "string") throw "Error: postalCode must be a string";
          
         // get collection
         const eventCollection = await events();

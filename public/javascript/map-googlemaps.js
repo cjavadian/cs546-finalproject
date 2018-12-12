@@ -127,22 +127,19 @@ function saveEvent(element, lat, lng){
         dataType: "json",
         data: eventToSave,
         error: function (jqXHR, textStatus, errorThrown) {
-     //        // alert(errorThrown);
-			console.log(jqXHR)
-
-     //        // Display errors sent from backend & Hide map
-     //        if(jqXHR.responseJSON){
-     //        	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
-     //        } else {
-     //        	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR['statusText'] + '</strong>';
-     //        }
-     //        // display/hide alerts
-		// 	document.getElementById('alertsDiv').style.display = 'block';
-		// 	document.getElementById('hideMap').style.display = 'none';
-		// 	document.getElementById('warningsDiv').style.display = 'none';
-		// 	// display submit buttons
-		// 	document.getElementById('submitButton').style.display = 'block';
-				// document.getElementById('loadButton').style.display = 'none';
+            // Display errors sent from backend & Hide map
+            if(jqXHR.responseJSON){
+            	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR.responseJSON + '</strong>';
+            } else {
+            	document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR['statusText'] + '</strong>';
+            }
+            // display/hide alerts
+			document.getElementById('alertsDiv').style.display = 'block';
+			document.getElementById('hideMap').style.display = 'none';
+			document.getElementById('warningsDiv').style.display = 'none';
+			// display submit buttons
+			document.getElementById('submitButton').style.display = 'block';
+			document.getElementById('loadButton').style.display = 'none';
         },
         success: function (data) {
         	// change the property in the object that says if an event was saved or not
@@ -157,8 +154,6 @@ function saveEvent(element, lat, lng){
 			}
 			// save the updated object into the session data 
 			sessionStorage.setItem("parsedEvents", JSON.stringify(parsedEvents))
-
-        	// console.log(data)
         }
     });
 

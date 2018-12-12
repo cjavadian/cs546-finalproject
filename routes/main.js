@@ -65,10 +65,6 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 				Array.prototype.push.apply(resEvents, response['_embedded']['events'])
 			}
 
-			// console.log(resEvents['_embedded']['venues'][0]['location'])
-			// resEvents.forEach(e => {
-			// 	console.log(JSON.stringify(e['_embedded']['venues'][0]['location']))
-			// })
 			payload = resEvents
 
 			// QUERY DB TO GET ALL SAVED EVENTS,
@@ -86,7 +82,6 @@ router.post("/", mid.validateMapForm, async (req, res) =>{
 			var result = {"auth": req.isAuthenticated, "locations": payload, "saved": dict_saved_events, "center": {"lat": centerLat, "lng": centerLng}, "warnings": warnings}
 			//send data to front end via AJAX 
 			res.send({'Result': result})
-			// console.log(payload)
 		}else{
 			payload['Error'] = 'No Events Found'
 			res.status(404).send({'Result': payload})

@@ -38,7 +38,9 @@ router.post("/save", async (req, res) =>{
             url: req.body.url,
             eventName: req.body.eventName,
             venue: req.body.venue,
-            dateTime: req.body.dateTime
+            dateTime: req.body.dateTime,
+            type: req.body.type,
+            location: req.body.location
         }
 
         // save event and add to user's saved event list
@@ -55,7 +57,6 @@ router.post("/unsave", async (req, res) =>{
     try{
         // Remove the event from the user's saved list. We aren't removing
         // the event from the DB because other users can still have that event saved
-        console.log(req.body);
         await Users.unsaveEvent(req.authedUser._id, req.body.id);
         res.json('done')
     }catch(e){
