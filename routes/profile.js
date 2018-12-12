@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Events = require("../data").events
 const Users = require("../data").users
+const moment = require("moment");
 
 // get shared events info - need to do this one by one since order is not preserved
 // in find in mongo
@@ -19,10 +20,26 @@ async function getSharedEventInfo(sharedEvents) {
     return ret; 
 }
 
+function formatDates(events) {
+    events.forEach(e => {
+        const formattedDate = moment(e.dateTime).format('MMMM Do YYYY, h:mm a');
+        if (e === "Invalid Date") {
+            e.dateTime = "Check website for times";
+        } else {
+            e.dateTime = formattedDate;
+        }
+    })
+
+    return events;
+}
+
 router.get("/", async (req, res) => {
     try {
-        const savedEvents = await Events.getEventsByIDs(req.authedUser.savedEvents);
-        const sharedEvents = await getSharedEventInfo(req.authedUser.sharedEvents);
+        let savedEvents = await Events.getEventsByIDs(req.authedUser.savedEvents);
+        let sharedEvents = await getSharedEventInfo(req.authedUser.sharedEvents);
+
+        savedEvents = formatDates(savedEvents);
+        sharedEvents = formatDates(sharedEvents);
 
         res.render("profile", {savedEvents: savedEvents, sharedEvents: sharedEvents});
     } catch (e) {
@@ -40,7 +57,7 @@ router.post("/save", async (req, res) =>{
             url: req.body.url,
             eventName: req.body.eventName,
             venue: req.body.venue,
-            dateTime: req.body.dateTime,
+            dateTime:  moment(req.body.dateTime, "MMMM Do YYYY, h:mm a").toDate(),
             type: req.body.type,
             location: req.body.location
         }
