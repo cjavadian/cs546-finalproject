@@ -71,13 +71,13 @@ router.post("/share", async (req, res) => {
         await Users.shareEvent(req.authedUser.username, req.body.toUser, req.body.eventID);
         res.json("done");
     } catch (e) {
-        console.log(e);
         // send userful error text
         if (e === "Error: No user found") {
             return res.status(404).json("No user found");
         } else if (e === "Error: Can't share with yourself") {
             return res.status(403).json("You can't share with yourself");
         }
+        console.log(e);
         return res.status(500).json("An unexpected error occurred");
     }
 });

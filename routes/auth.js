@@ -41,11 +41,11 @@ router.post("/login", authValidation.loginValidator, async (req, res) => {
         // render the profile page
         res.redirect("/profile");
     } catch (e) {
-        console.log(e);
         // entered a bad username
         if (e === "Error: user not found") {
             return res.status(404).render("login", {error: "Invalid username"});
         }
+        console.log(e);
         return res.status(500).render("login", {error: "An unexpected error occurred"});
     }
 })
@@ -66,13 +66,13 @@ router.post("/signup", authValidation.signupValidator, async (req, res) => {
         res.cookie("AuthCookie", newUser.sessionID, options);
         res.redirect("/");
     } catch (e) {
-        console.log(e);
         // show errors for creating user
         if (e === "Username already exists" || e === "Email already exists") {
             return res.render("signup", {
                 error: e
             })
         }
+        console.log(e);
         res.status(500).render("signup", {
             error: "An unexpected error occurred"
         });
@@ -102,6 +102,7 @@ router.get("/delete", isLoggedIn, async (req, res) => {
         res.clearCookie("AuthCookie");
         res.redirect("/");
     } catch (e) {
+        console.log(e);
         res.redirect("/profile");
     }
 })
