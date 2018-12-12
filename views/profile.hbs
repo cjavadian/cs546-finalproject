@@ -29,9 +29,6 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/delete">Delete Account</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/auth/logout">Logout</a>
                     </li>
                 </ul>
@@ -46,6 +43,7 @@
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-saved-tab" data-toggle="tab" href="#nav-saved" role="tab" aria-controls="nav-saved" aria-selected="true">Saved Events</a>
                 <a class="nav-item nav-link" id="nav-shared-tab" data-toggle="tab" href="#nav-shared" role="tab" aria-controls="nav-shared" aria-selected="false">Shared with Me</a>
+                <a class="nav-item nav-link" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Account Settings</a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -116,6 +114,10 @@
                     </div>
                     {{/each}}
                 </div>
+            </div>
+            <div class="tab-pane fade show active" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+                <h1>Account Settings</h1>
+                <button class="btn btn-danger btn-lg"><a href="/auth/delete">Delete Acount</a></button>
             </div>
         </div>
         <!-- ADD THIS JS TO ALL PAGES -->
