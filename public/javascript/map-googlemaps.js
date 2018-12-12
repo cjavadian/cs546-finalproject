@@ -121,7 +121,7 @@ function saveEvent(element, lat, lng){
 	var postRequest = eventToSave['saved'] ? '/profile/unsave' : '/profile/save'
 
 	$.ajax({
-        url: 'http://localhost:3000' + postRequest,
+        url: postRequest,
         type: 'POST',
         timeout: 30 * 1000,
         dataType: "json",

@@ -72,7 +72,7 @@ $(document).ready(function() {
                     };
                     // AJAX request to send payload to backend
                     $.ajax({
-                        url: 'http://localhost:3000/',
+                        url: '/',
                         type: 'POST',
                         timeout: 30 * 1000,
                         dataType: "json",

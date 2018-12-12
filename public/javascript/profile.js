@@ -14,7 +14,7 @@ function shareEvent(element) {
     alertsDiv.style = "display: none;";
     var feedback = document.getElementById("feedback-" + eventID);
     $.ajax({
-        url: 'http://localhost:3000/profile/share',
+        url: '/profile/share',
         type: 'POST',
         timeout: 30 * 1000,
         dataType: "json",
@@ -54,7 +54,7 @@ function removeSharedEvent(element) {
     alertsDiv.style = "display: none;";
     var feedback = document.getElementById("feedback-" + eventID + '-' + username);
     $.ajax({
-        url: 'http://localhost:3000/profile/unshare',
+        url: '/profile/unshare',
         type: 'POST',
         timeout: 30 * 1000,
         dataType: "json",
@@ -83,7 +83,7 @@ function removeSavedEvent(element) {
     alertsDiv.style = "display: none;";
     var feedback = document.getElementById("feedback-" + eventID);
     $.ajax({
-        url: 'http://localhost:3000/profile/unsave',
+        url: '/profile/unsave',
         type: 'POST',
         timeout: 30 * 1000,
         dataType: "json",
