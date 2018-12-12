@@ -21,15 +21,18 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/profile">Profile</a>
+                        <a class="nav-link" href="/profile"><i class="fa fa-user" aria-hidden="true"></i>
+                        Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/#findevents">Map</a>
+                        <a class="nav-link" href="/#findevents"><i class="fa fa-map" aria-hidden="true"></i>
+                        Map</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/logout">Logout</a>
+                        <a class="nav-link" href="/auth/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>
+                        Logout</a>
                     </li>
                 </ul>
             </div>
@@ -41,9 +44,12 @@
         {{/if}}
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-saved-tab" data-toggle="tab" href="#nav-saved" role="tab" aria-controls="nav-saved" aria-selected="true">Saved Events</a>
-                <a class="nav-item nav-link" id="nav-shared-tab" data-toggle="tab" href="#nav-shared" role="tab" aria-controls="nav-shared" aria-selected="false">Shared with Me</a>
-                <a class="nav-item nav-link" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Account Settings</a>
+                <a class="nav-item nav-link active" id="nav-saved-tab" data-toggle="tab" href="#nav-saved" role="tab" aria-controls="nav-saved" aria-selected="true"><i class="fa fa-bookmark" aria-hidden="true"></i>
+                Saved Events</a>
+                <a class="nav-item nav-link" id="nav-shared-tab" data-toggle="tab" href="#nav-shared" role="tab" aria-controls="nav-shared" aria-selected="false"><i class="fa fa-share-alt" aria-hidden="true"></i>
+                Shared with Me</a>
+                <a class="nav-item nav-link" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false"><i class="fa fa-cog" aria-hidden="true"></i>
+                Account Settings</a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent" >
@@ -55,8 +61,8 @@
                             <div class="row">
                                 <div class="col-xs">
                                     <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
-                                    <p>{{this.venue}} on {{this.dateTime}}</p>
-                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
+                                    <p><i class="fa fa-calendar" aria-hidden="true"></i> {{this.dateTime}}</p>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.venue}}, {{this.location.city}}</p>
                                 </div>
                                 <div class="col-xs">
                                     <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" onclick="removeSavedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -65,7 +71,8 @@
                             <div class="row">
                                 <div class="col-xs">
                                     <form onsubmit="shareEvent(this); return false;" data-id="{{this._id}}">
-                                        <label for="toUser">Share with: </label>
+                                        <label for="toUser"><i class="fa fa-share" aria-hidden="true"></i>
+                                        </label>
                                         <input type="text" placeholder="Username or Email" required/>
                                         <button type="submit">Share</button>
                                     </form>
@@ -96,8 +103,8 @@
                             <div class="row">
                                 <div class="col-xs">
                                     <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
-                                    <p>{{this.venue}} on {{this.dateTime}}</p>
-                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
+                                    <p><i class="fa fa-calendar" aria-hidden="true"></i> {{this.dateTime}}</p>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.venue}}, {{this.location.city}}</p>
                                     <p>Shared by: {{this.username}}</p>
                                     <div role="alert" id="alertsDiv-{{this._id}}-{{this.username}}" style="display: none;">
                                         <p class="feedback" id="feedback-{{this._id}}-{{this.username}}"></p>

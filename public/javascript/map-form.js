@@ -78,11 +78,12 @@ $(document).ready(function() {
                         dataType: "json",
                         data: request_data,
                         error: function(jqXHR, textStatus, errorThrown) {
+                        	var iconStr = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '
                             // Display errors sent from backend & Hide map
                             if (jqXHR.responseJSON) {
-                                document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
+                                document.getElementById('alertsDiv').innerHTML = iconStr + '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
                             } else {
-                                document.getElementById('alertsDiv').innerHTML = '<strong>' + jqXHR['statusText'] + '</strong>';
+                                document.getElementById('alertsDiv').innerHTML = iconStr + '<strong>' + jqXHR['statusText'] + '</strong>';
                             }
                             // display/hide alerts
                             document.getElementById('alertsDiv').style.display = 'block';
@@ -95,7 +96,7 @@ $(document).ready(function() {
                             document.getElementById('warningsDiv').style.display = 'none';
 
                             if (data['Result']['warnings']['rateLimit']) {
-                                document.getElementById('warningsDiv').innerHTML = '<strong>' + data['Result']['warnings']['rateLimit'] + '</strong>'
+                                document.getElementById('warningsDiv').innerHTML = iconStr + '<strong>' + data['Result']['warnings']['rateLimit'] + '</strong>'
                                 document.getElementById('warningsDiv').style.display = 'block';
                             }
 
