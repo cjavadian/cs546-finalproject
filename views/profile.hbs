@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Signup</title>
+        <title>Profile</title>
         <meta name="viewport" content="initial-scale=1.0">
         <meta charset="utf-8">
         <!-- ADD THIS CSS TO ALL PAGES -->
@@ -81,6 +81,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <hr/>
+                    </div>
                     {{/each}}
                 </div>
             </div>
@@ -107,6 +110,9 @@
                                 <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" data-username="{{this.username}}" onclick="removeSharedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <hr/>
                     </div>
                     {{/each}}
                 </div>

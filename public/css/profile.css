@@ -135,3 +135,10 @@ a:hover {
 .feedback {
     color: black;
 }
+
+hr {
+ margin-top: 20px;
+ margin-bottom: 20px;
+ border-top: 1px solid;
+ color: white;
+}
