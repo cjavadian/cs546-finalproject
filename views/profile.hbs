@@ -49,68 +49,76 @@
         <div class="tab-content" id="nav-tabContent" >
             <div class="tab-pane fade show active" id="nav-saved" role="tabpanel" aria-labelledby="nav-saved-tab">
                 <div class="col">
-                    {{#each savedEvents}}
-                    <div id="{{this._id}}">
-                        <div class="row">
-                            <div class="col-xs">
-                                <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
-                                <p>{{this.venue}} on {{this.dateTime}}</p>
-                                <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
-                            </div>
-                            <div class="col-xs">
-                                <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" onclick="removeSavedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs">
-                                <form onsubmit="shareEvent(this); return false;" data-id="{{this._id}}">
-                                    <label for="toUser">Share with: </label>
-                                    <input type="text" placeholder="Username or Email" required/>
-                                    <button type="submit">Share</button>
-                                </form>
-                                <div role="alert" id="alertsDiv-{{this._id}}" style="display: none;">
-                                    <p class="feedback" id="feedback-{{this._id}}"></p>
-                                    {{!-- only hide the alert div, dont remove it from DOM --}}
-                                    <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}').hide()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                    {{#if savedEvents}}
+                        {{#each savedEvents}}
+                        <div id="{{this._id}}">
+                            <div class="row">
+                                <div class="col-xs">
+                                    <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
+                                    <p>{{this.venue}} on {{this.dateTime}}</p>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
+                                </div>
+                                <div class="col-xs">
+                                    <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" onclick="removeSavedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs">
+                                    <form onsubmit="shareEvent(this); return false;" data-id="{{this._id}}">
+                                        <label for="toUser">Share with: </label>
+                                        <input type="text" placeholder="Username or Email" required/>
+                                        <button type="submit">Share</button>
+                                    </form>
+                                    <div role="alert" id="alertsDiv-{{this._id}}" style="display: none;">
+                                        <p class="feedback" id="feedback-{{this._id}}"></p>
+                                        {{!-- only hide the alert div, dont remove it from DOM --}}
+                                        <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}').hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <hr/>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            <hr/>
-                        </div>
-                    </div>
-                    {{/each}}
+                        {{/each}}
+                    {{else}}
+                        <p>You haven't saved any events.</p>
+                    {{/if}}
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-shared" role="tabpanel" aria-labelledby="nav-shared-tab">
                 <div class="col">
-                    {{#each sharedEvents}}
-                    <div id="{{this._id}}-{{this.username}}">
-                        <div class="row">
-                            <div class="col-xs">
-                                <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
-                                <p>{{this.venue}} on {{this.dateTime}}</p>
-                                <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
-                                <p>Shared by: {{this.username}}</p>
-                                <div role="alert" id="alertsDiv-{{this._id}}-{{this.username}}" style="display: none;">
-                                    <p class="feedback" id="feedback-{{this._id}}-{{this.username}}"></p>
-                                    {{!-- only hide the alert div, dont remove it from DOM --}}
-                                    <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}-{{this.username}}').hide()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                    {{#if sharedEvents}}
+                        {{#each sharedEvents}}
+                        <div id="{{this._id}}-{{this.username}}">
+                            <div class="row">
+                                <div class="col-xs">
+                                    <a target="_blank" href="{{this.url}}">{{this.eventName}}</a>
+                                    <p>{{this.venue}} on {{this.dateTime}}</p>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.location.city}}</p>
+                                    <p>Shared by: {{this.username}}</p>
+                                    <div role="alert" id="alertsDiv-{{this._id}}-{{this.username}}" style="display: none;">
+                                        <p class="feedback" id="feedback-{{this._id}}-{{this.username}}"></p>
+                                        {{!-- only hide the alert div, dont remove it from DOM --}}
+                                        <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}-{{this.username}}').hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-xs">
+                                    <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" data-username="{{this.username}}" onclick="removeSharedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
                                 </div>
                             </div>
-                            <div class="col-xs">
-                                <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" data-username="{{this.username}}" onclick="removeSharedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <div class="col-sm-4">
+                                <hr/>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <hr/>
-                        </div>
-                    </div>
-                    {{/each}}
+                        {{/each}}
+                    {{else}}
+                        <p>No events have been shared with you.</p>
+                    {{/if}}
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
