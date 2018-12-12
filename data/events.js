@@ -18,7 +18,7 @@ module.exports = {
 
         // make sure you actually found something
         if (!foundEvent) throw "Error: user not found";
-        return foundEvent; 
+        return foundEvent;
     },
     getEventsByIDs: async function(idArr) {
         // error check
@@ -30,7 +30,11 @@ module.exports = {
 
         const eventCollection = await events();
         const foundEvents = await eventCollection.find({
-            _id: { $in: idArr}
+            _id: {
+                $in: idArr
+            }
+        }).sort({
+            dateTime: 1
         }).toArray();
 
         return foundEvents;
@@ -44,7 +48,7 @@ module.exports = {
         if (!event.dateTime) throw "Error: must provide a dateTime";
         if (!event.type) throw "Error: must provide a event type";
         if (!event.location) throw "Error: must provide a location";
-        
+
         if (typeof event._id !== "string") throw "Error: id must be a string";
         if (typeof event.url !== "string") throw "Error: url must be a string";
         if (typeof event.eventName !== "string") throw "Error: event name must be a string";
@@ -56,7 +60,7 @@ module.exports = {
         if (typeof event.location.latitude !== "string") throw "Error: latitude must be a string";
         if (typeof event.location.longitude !== "string") throw "Error: longitude must be a string";
         if (typeof event.location.postalCode !== "string") throw "Error: postalCode must be a string";
-         
+
         // get collection
         const eventCollection = await events();
         const foundEvent = await eventCollection.findOne({

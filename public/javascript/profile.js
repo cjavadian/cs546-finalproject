@@ -1,3 +1,14 @@
+function removeFadeOut(element, speed) {
+    var seconds = speed/1000;
+    element.style.transition = "opacity "+seconds+"s ease";
+
+    element.style.opacity = 0;
+    setTimeout(function() {
+        element.parentNode.removeChild(element);
+    }, speed);
+}
+
+
 function shareEvent(element) {
     var eventID = element.getAttribute("data-id");
     // get the input
@@ -67,7 +78,7 @@ function removeSharedEvent(element) {
         },
         success: function(data) {
             var container = document.getElementById(eventID + "-" + username);
-            container.parentNode.removeChild(container);
+            removeFadeOut(container, 500);
         },   
     });
 }
@@ -96,7 +107,7 @@ function removeSavedEvent(element) {
         },
         success: function(data) {
             var container = document.getElementById(eventID);
-            container.parentNode.removeChild(container);
+            removeFadeOut(container, 500);
         },   
     });
 }

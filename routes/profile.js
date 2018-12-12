@@ -3,12 +3,14 @@ const router = express.Router();
 const Events = require("../data").events
 const Users = require("../data").users
 
-// get shared events info - need to do this one by one since order is not preserver
+// get shared events info - need to do this one by one since order is not preserved
 // in find in mongo
 async function getSharedEventInfo(sharedEvents) {
     let ret = [];
 
-    for(var i = 0; i < sharedEvents.length; i++) {
+    // this loop goes in reverse so that the newest event shares are at the top of
+    // the page
+    for(var i = sharedEvents.length - 1; i >= 0; i--) {
         let event = await Events.getEventById(sharedEvents[i].eventID);
         event.username = sharedEvents[i].username;
         ret.push(event);
