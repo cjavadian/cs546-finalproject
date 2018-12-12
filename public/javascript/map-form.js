@@ -139,11 +139,13 @@ function parseData(resEvents, savedEvents){
 	resEvents.forEach(function(e){
 		// create an object with all the event details we want
 		var eventObj = {}
+		eventObj['type'] = e['type']
 		eventObj['id'] = e['id']
 		eventObj['url'] = e['url']
 		savedEvents[e['id']] ? eventObj['saved'] = true : eventObj['saved'] = false;
 		eventObj['eventName'] = e['name']
 		eventObj['venue'] = e['_embedded']['venues'][0]['name']
+		eventObj['location'] = {'city': e['_embedded']['venues'][0]['city']['name'], 'latitude': e['_embedded']['venues'][0]['location']['latitude'], 'longitude': e['_embedded']['venues'][0]['location']['longitude'], 'postalCode': e['_embedded']['venues'][0]['postalCode']}
 		eventObj['dateTime'] = moment(e['dates']['start']['dateTime'], moment.ISO_8601).format('MMMM Do YYYY, h:mm a')
 		if(eventObj['dateTime'] === 'Invalid date') eventObj['dateTime'] = 'Check website for times'
 		if (payload.hasOwnProperty(JSON.stringify(e['_embedded']['venues'][0]['location']))) {
@@ -152,6 +154,7 @@ function parseData(resEvents, savedEvents){
 			payload[JSON.stringify(e['_embedded']['venues'][0]['location'])] = [eventObj];
 		}
 	})
+	console.log(payload)
 	return payload
 }
 
