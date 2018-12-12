@@ -29,6 +29,7 @@ module.exports = {
         })
 
         const eventCollection = await events();
+        // also sort so that oldest events show up first
         const foundEvents = await eventCollection.find({
             _id: {
                 $in: idArr
@@ -53,7 +54,7 @@ module.exports = {
         if (typeof event.url !== "string") throw "Error: url must be a string";
         if (typeof event.eventName !== "string") throw "Error: event name must be a string";
         if (typeof event.venue !== "string") throw "Error: venue must be a string";
-        if (typeof event.dateTime !== "string") throw "Error: dateTime must be a string";
+        if (!event.dateTime instanceof Date) throw "Error: dateTime must be a date";
         if (typeof event.type !== "string") throw "Error: event type must be a string";
         if (typeof event.location !== "object") throw "Error: location must be a object";
         if (typeof event.location.city !== "string") throw "Error: city must be a string";
