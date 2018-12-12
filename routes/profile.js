@@ -52,7 +52,6 @@ router.post("/save", async (req, res) =>{
     try{
         // make a new object unless i find a better way to rename
         // and remove fields
-        console.log(req.body.dateTime);
         let eventToSave = {
             _id: req.body.id,
             url: req.body.url,
