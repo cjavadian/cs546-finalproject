@@ -4,25 +4,20 @@ const Events = require("../data").events
 const Users = require("../data").users
 const moment = require("moment");
 
-// get shared events info - need to attach users to events also
+// get shared events info - need to do this one by one since order is not preserved
+// in find in mongo
 async function getSharedEventInfo(sharedEvents) {
-    const eventIDs = sharedEvents.map(e => e.eventID);
+    let ret = [];
 
-    let events = await Events.getEventsByIDs(eventIDs);
+    // this loop goes in reverse so that the newest event shares are at the top of
+    // the page
+    for(var i = sharedEvents.length - 1; i >= 0; i--) {
+        let event = await Events.getEventById(sharedEvents[i].eventID);
+        event.username = sharedEvents[i].username;
+        ret.push(event);
+    };
 
-    console.log(events);
-    sharedEvents.forEach(saved => {
-        let eventIndex = events.findIndex(e => e._id === saved.eventID);
-
-        if (!events[eventIndex].users) {
-            events[eventIndex].users = [saved.username];
-        } else {
-            events[eventIndex].users.push(saved.username)
-        }
-    })
-
-    console.log(events);
-    return events;
+    return ret; 
 }
 
 function formatDates(events) {

@@ -99,23 +99,23 @@
                 <div class="col">
                     {{#if sharedEvents}}
                         {{#each sharedEvents}}
-                        <div id="{{this._id}}-{{this.users}}">
+                        <div id="{{this._id}}-{{this.username}}">
                             <div class="row">
                                 <div class="col-xs">
                                     <a target="_blank" class="eventName" href="{{this.url}}">{{this.eventName}}</a>
                                     <p><i class="fa fa-calendar" aria-hidden="true"></i> {{this.dateTime}}</p>
                                     <p><i class="fa fa-map-marker" aria-hidden="true" style="padding-right: 5px;"></i>{{this.venue}}, {{this.location.city}}</p>
-                                    <p>Shared by: {{this.users}}</p>
-                                    <div role="alert" id="alertsDiv-{{this._id}}-{{this.users}}" style="display: none;">
-                                        <p class="feedback" id="feedback-{{this._id}}-{{this.users}}"></p>
+                                    <p>Shared by: {{this.username}}</p>
+                                    <div role="alert" id="alertsDiv-{{this._id}}-{{this.username}}" style="display: none;">
+                                        <p class="feedback" id="feedback-{{this._id}}-{{this.username}}"></p>
                                         {{!-- only hide the alert div, dont remove it from DOM --}}
-                                        <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}-{{this.users}}').hide()">
+                                        <button type="button" class="close" aria-label="Close" onclick="$('#alertsDiv-{{this._id}}-{{this.username}}').hide()">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="col-xs">
-                                    <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" data-username="{{this.users}}" onclick="removeSharedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    <button class="btn btn-lg icon-btn-remove" data-eventID="{{this._id}}" data-username="{{this.username}}" onclick="removeSharedEvent(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                             <div class="col-sm-4">
