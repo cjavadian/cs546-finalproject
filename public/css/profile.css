@@ -142,3 +142,8 @@ hr {
  border-top: 1px solid;
  color: white;
 }
+
+#nav-tabContent{
+    padding-top: 20px;
+    padding-left: 20px; 
+}
