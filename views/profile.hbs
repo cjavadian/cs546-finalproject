@@ -71,9 +71,9 @@
                             <div class="row">
                                 <div class="col-xs">
                                     <form onsubmit="shareEvent(this); return false;" data-id="{{this._id}}">
-                                        <label for="toUser"><i class="fa fa-share" aria-hidden="true"></i>
+                                        <label for="toUser-{{this._id}}"><i class="fa fa-share" aria-hidden="true"></i>
                                         </label>
-                                        <input id="toUser" type="text" placeholder="Username or Email" required/>
+                                        <input id="toUser-{{this._id}}" type="text" placeholder="Username or Email" required/>
                                         <button type="submit">Share</button>
                                     </form>
                                     <div role="alert" id="alertsDiv-{{this._id}}" style="display: none;">
@@ -129,7 +129,9 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
-                <a href="/auth/delete"><button class="btn btn-danger btn-lg">Delete Account</button></a>
+                <form method="get" action="/auth/delete">
+                    <button class="btn btn-danger btn-lg" type="submit">Delete Account</button>
+                </form>
             </div>
         </div>
         <!-- ADD THIS JS TO ALL PAGES -->
