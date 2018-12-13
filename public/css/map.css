@@ -85,24 +85,23 @@ body {
 	font-family: sans-serif;
 }
 
-.btn-primary {
+#submitButton {
     color: black;
     background-color: #EE834E;
     border-color: #EE834E;
-    width: 33%;
 }
 
 p:hover {
     font-weight: bolder;
 }
 
-button#submitButton:hover {
+#submitButton:hover {
     background-color: black;
     border-color: #EE834E;
     color: #EE834E;
 }
 
-button#loadButton {
+#loadButton {
     background-color: #EE834E;
 }
 
