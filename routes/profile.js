@@ -3,6 +3,7 @@ const router = express.Router();
 const Events = require("../data").events
 const Users = require("../data").users
 const moment = require("moment");
+const mid = require("../middleware/profileValidation");
 
 // get shared events info - need to do this one by one since order is not preserved
 // in find in mongo
@@ -48,7 +49,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.post("/save", async (req, res) =>{
+router.post("/save", mid.validateSave, async (req, res) =>{
     try{
         // make a new object unless i find a better way to rename
         // and remove fields
@@ -72,7 +73,7 @@ router.post("/save", async (req, res) =>{
     }
 });
 
-router.post("/unsave", async (req, res) =>{
+router.post("/unsave", mid.validateUnsave, async (req, res) =>{
     try{
         // Remove the event from the user's saved list. We aren't removing
         // the event from the DB because other users can still have that event saved
@@ -84,7 +85,7 @@ router.post("/unsave", async (req, res) =>{
     }
 });
 
-router.post("/share", async (req, res) => {
+router.post("/share", mid.validateShare, async (req, res) => {
     try {
         // share the event
         await Users.shareEvent(req.authedUser.username, req.body.toUser, req.body.eventID);
@@ -101,7 +102,7 @@ router.post("/share", async (req, res) => {
     }
 });
 
-router.post("/unshare", async (req, res) => {
+router.post("/unshare", mid.validateUnshare, async (req, res) => {
     try {
         await Users.removeSharedEvent(req.authedUser._id, req.body.eventID, req.body.username);
         res.json("done");
