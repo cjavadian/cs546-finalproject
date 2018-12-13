@@ -7,7 +7,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Joshua Maldonado, Catherine Javadian, Daniel Salerno",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.2",
