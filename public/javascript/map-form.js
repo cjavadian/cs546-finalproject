@@ -70,6 +70,8 @@ $(document).ready(function() {
                             "unit": form[4]['value']
                         }
                     };
+
+                    var iconStr = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '
                     // AJAX request to send payload to backend
                     $.ajax({
                         url: '/',
@@ -78,7 +80,6 @@ $(document).ready(function() {
                         dataType: "json",
                         data: request_data,
                         error: function(jqXHR, textStatus, errorThrown) {
-                        	var iconStr = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '
                             // Display errors sent from backend & Hide map
                             if (jqXHR.responseJSON) {
                                 document.getElementById('alertsDiv').innerHTML = iconStr + '<strong>' + jqXHR.responseJSON['Result']['Error'] + '</strong>';
