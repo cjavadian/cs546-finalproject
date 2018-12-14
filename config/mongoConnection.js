@@ -1,8 +1,8 @@
 const MongoClient = require("mongodb").MongoClient;
 const settings = {
     mongoConfig: {
-        serverUrl: "mongodb://josh:event_finder1@ds237700.mlab.com:37700/event_finder",
-        // database: "event_finder"
+        serverUrl: "mongodb://localhost:37700/",
+        database: "event_finder"
     }
 };
 const mongoConfig = settings.mongoConfig;
